@@ -1,0 +1,6 @@
+dependencies {
+    compile libs.jsonrpc
+    compile libs.rsa
+    compile libs.net
+    compile project(":entity")
+}

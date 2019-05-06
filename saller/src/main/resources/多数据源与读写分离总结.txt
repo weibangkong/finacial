@@ -1,0 +1,61 @@
+MySQL主从复制或者alibaba.otter
+
+
+
+                    多数据源配置
+  step:
+    1.配置url，username，password
+    2.配置数据源DataSource
+    3.配置EntityManagerFactoryBuilder
+    4.配置TransactionManager
+    5.配置Jpa   使用@EnableJpaRepository注解将DataSource与EntityManagerBuilder、TransactionManager
+    连接整合例：
+        @EnableJpaRepository(basePackagesClasses = Repository.clazz ,
+        EntityManagerFactoryRef="EntityManagerFactory", TransactionManagerRef="TransactionManager")
+        public masterReposirotyConfig(){
+        }
+
+  ps:
+    1.repository根据主从库进行分包处理，以避免重复注入导致的后注入数据源覆盖掉先注入数据源的情况
+    2.主数据源需使用@Primary标注，使其成为一个默认数据源
+    3.EntityManagerFactoryBuilder.packages(XXX)---根据源码注释XXX应该为使用@Entity注解的entity对象
+    4.同一容器中同一类型却不同名称的实体类，可使用@qualifier()根据名称指定注入对象，该注解也可用于为一个对象
+    指定成为另对象进行注入
+
+
+
+
+
+                    读写分离
+  与多数据源配置的区别:不同的数据源相同的repositories(读数据的时候连接到读库，写的时候连接到写库)
+
+  实现思路:
+    1.添加额外接口，继承实现(实际是借助多数据源配置，将其中一个数据源作为读库)
+    2.修改源码(目前个人能力不足)
+        具体:
+            创建一个@注解
+            重写RepositoryConfigurationDelegate，判断前缀并添加到repository上
+
+
+              获取注解元数据:
+               AnnotationMetadata metadata = (AnnotationMetadata) configuration.getSource();
+              判断是否有什么注解
+               metadata.hasAnnotation(@Annotation.class.getName());
+              获取注解属性值:
+               Map<String, Object> prefixData = metadata.getAnnotationAttributes(@Annotation.class.getName());
+
+  ps:
+
+
+
+  类继承关系:
+    @EnableJpaRepositories(注解,是入口) ->
+    JpaRepositoriesRegistrar(父类) ->
+    RepositoryBeanDefinitionRegistrarSupport(方法)
+    (registerBeanDefinitions) ->
+    RepositorConfigurationDelegate(registerRepositoriesIn)
+
+
+    configurationSource ->
+    AnnotationRepositoryConfigurationSource ->
+    getSource -> AnnotationMetadata(注解配置元数据)

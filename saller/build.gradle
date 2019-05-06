@@ -1,0 +1,8 @@
+dependencies {
+    compile project(":entity")//引入基本的entity模块
+    compile project(":api")//引入api模块
+    compile project(":swagger")//引入swagger模块
+    compile libs.hazelcast
+    compile libs.activemq
+    compile libs.mysql
+}

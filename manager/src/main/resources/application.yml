@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.103.2.86:3306/test?user=root&password=root
+  jpa:
+    show-sql: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+#  activemq:
+#    broker-url: failover:(tcp://192.168.1.7:61617,tcp://192.168.1.7:61618)?randomize=true
+  jms:
+    pub-sub-domain: true
+server:
+  port: 8081
+  context-path: /manager
+#swagger:
+#  groupName: manager
+#  basePackage: com.kwb.manager.controller
+
+logging:
+  level:
+    com.googlecode.jsonrpc4j: debug

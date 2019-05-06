@@ -1,0 +1,33 @@
+server:
+  context-path: /saller
+  port: 8082
+
+rpc.client.url: http://localhost:8081/manager/
+
+rpc.basePackage.path: com.kwb.api
+
+logging:
+  level:
+    com.googlecode.jsonrpc4j: debug
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  cache:
+    type: hazelcast
+  activemq:
+    broker-url: failover:(tcp://192.168.1.7:61616,tcp://192.168.1.7:61617,tcp://192.168.1.7:61618)?randomize=true
+#    信任所有包
+    packages:
+      trust-all: true
+  datasource:
+    master:
+      url: jdbc:mysql://192.168.1.7:3306/finacial?user=bloodlib&password=bloodlib&userUnicode=true&charset=utf-8
+    slave:
+      url: jdbc:mysql://192.168.1.7:3306/finacial_backup?user=bloodlib&password=bloodlib&userUnicode=true&charset=utf-8
+  jpa:
+    show-sql: true
+#swagger:
+#  groupName: saller
+#  basePackage: com.kwb.manager.controller
+verification:
+  verificationlocation: D:\\verification

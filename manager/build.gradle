@@ -1,0 +1,8 @@
+dependencies {
+    compile project(":entity")//entity模块依赖
+    compile project(":util")//util模块依赖
+    compile project(":swagger")//swagger
+    compile project(":api")//api模块
+    compile libs.mysql
+    compile libs.activemq
+}
